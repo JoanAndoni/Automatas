@@ -1,5 +1,5 @@
 #Alejandra Tubilla      A01022960
-#Joan Andoni 
+#Joan Andoni González   A00569929
 #German Torres          A01651423
 
 import networkx as nx
