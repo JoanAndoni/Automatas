@@ -27,12 +27,12 @@ def NFA(expresionRegular, star, fin):
 
     if star == True:
 
-        state = [estadoFinal, 'ep', estadoFinal+1+estadoActual]
+        estado = [estadoFinal, 'ep', estadoFinal+1+estadoActual]
         estadoFinal += (1 + estadoActual)
         if estadoActual != 0: estadoActual = 0
 
-        if state not in automata:
-            automata.append(state)
+        if estado not in automata:
+            automata.append(estado)
 
     #Dividir la expresion regular por partes
     for index, caracter in enumerate(expresionRegular):
@@ -81,29 +81,29 @@ def NFA(expresionRegular, star, fin):
                 for index, caracter in enumerate(estado_OR):
                     
                     if index == 0:
-                        state = [estadoFinalOR, caracter, estadoFinal + 1 +estadoActual]
+                        estado = [estadoFinalOR, caracter, estadoFinal + 1 +estadoActual]
                     else:
-                        state = [estadoFinal, caracter, estadoFinal + 1 +estadoActual]
+                        estado = [estadoFinal, caracter, estadoFinal + 1 +estadoActual]
 
                     estadoFinal += (1 + estadoActual)
                     if estadoActual != 0: estadoActual = 0
 
-                    if state not in automata:
-                        automata.append(state)
+                    if estado not in automata:
+                        automata.append(estado)
 
                     if estadoFinal not in estados:
                         estados.append(estadoFinal)
 
                     if index == len(estado_OR) -1:       
-                        state = [estadoFinal, 'ep', numeroEstadosF]
-                        if state not in automata:
-                            automata.append(state)
+                        estado = [estadoFinal, 'ep', numeroEstadosF]
+                        if estado not in automata:
+                            automata.append(estado)
 
             if star == True: 
 
-                state = [numeroEstadosF, 'ep', estadoFinalOR]
-                if state not in automata:
-                    automata.append(state)
+                estado = [numeroEstadosF, 'ep', estadoFinalOR]
+                if estado not in automata:
+                    automata.append(estado)
 
                 star = False
 
@@ -114,42 +114,42 @@ def NFA(expresionRegular, star, fin):
 
         else: 
 
-            star_states = 1
+            star_estados = 1
 
             for caracter in expresionRegular:
-                state = [estadoFinal, caracter, estadoFinal +1]
+                estado = [estadoFinal, caracter, estadoFinal +1]
                 estadoFinal += 1
-                star_states += 1
+                star_estados += 1
 
-                if state not in automata:
-                    automata.append(state)
+                if estado not in automata:
+                    automata.append(estado)
 
             if star == True:
-                state = [estadoFinal, 'ep', estadoAnterior]
-                if state not in automata:
-                    automata.append(state)
+                estado = [estadoFinal, 'ep', estadoAnterior]
+                if estado not in automata:
+                    automata.append(estado)
 
-                estadoActual = star_states
+                estadoActual = star_estados
                 estadoFinal = estadoAnterior
 
     if star:
-        state = [estadoFinal, 'ep', estadoAnterior]
+        estado = [estadoFinal, 'ep', estadoAnterior]
         estadoFinal = estadoAnterior
 
 #Funcion del epsilon closure
 def epsilonClosure(estados):
     
-    for state in estados:
+    for estado in estados:
         for estadoNFA in automata:
-            if estadoNFA[0] == state and estadoNFA[1] == 'ep' and not estadoNFA[2] in estados:
+            if estadoNFA[0] == estado and estadoNFA[1] == 'ep' and not estadoNFA[2] in estados:
                  estados.append(estadoNFA[2])
     
     return estados
 
 #Funcion para los movimientos
-def move(state,simbolo):
+def move(estado,simbolo):
     temporal = []
-    for s in state:
+    for s in estado:
         for estadoNFA in automata:
             if estadoNFA[0] == s and estadoNFA[1] == simbolo and not estadoNFA[2] in temporal:
                 temporal.append(estadoNFA[2])
@@ -159,10 +159,10 @@ def move(state,simbolo):
     return temporal
 
 #Funcion para estados nuevos
-def nuevo(state,estadosNuevos):
+def nuevo(estado,estadosNuevos):
 
     for n in estadosNuevos:
-        if set(n) == set(state):
+        if set(n) == set(estado):
             return 0
 
     return 1
@@ -186,10 +186,10 @@ def NFAtoDFA(inicialNFA,finalNFA,alfabeto):
     if finalNFA in estadoActual:
         estadosFinales.append(estadoActual)
 
-    for state in estadosNuevos:
+    for estado in estadosNuevos:
         for simbolo in alfabeto:
 
-            estadoActual = move(state,simbolo)
+            estadoActual = move(estado,simbolo)
 
             if estadoActual:
 
@@ -198,7 +198,7 @@ def NFAtoDFA(inicialNFA,finalNFA,alfabeto):
                     if finalNFA in estadoActual:
                         estadosFinales.append(estadoActual)
 
-                DFA.append([estadosNuevos.index(state),simbolo,estadosNuevos.index(estadoActual)])
+                DFA.append([estadosNuevos.index(estado),simbolo,estadosNuevos.index(estadoActual)])
 
     dfa["dfa"] = DFA
     dfa["estados"] = estadosNuevos
@@ -216,11 +216,11 @@ def evaluarEntrada(cadena, ODFA):
 
         found = False
 
-        for index, state in enumerate(dfa):
-            if state[0] == ini:
-                if state[1] == caracter:
+        for index, estado in enumerate(dfa):
+            if estado[0] == ini:
+                if estado[1] == caracter:
                     found = True
-                    ini = state[2]
+                    ini = estado[2]
                     break
 
                 
@@ -250,10 +250,10 @@ g.add_nodes_from(estados)
 
 # Datos de NFA
 print("NFA")
-for state in automata:
-    print(state)
+for estado in automata:
+    print(estado)
 
-    g.add_edge(state[0], state[2])
+    g.add_edge(estado[0], estado[2])
 
 
 # Datos de DFA
