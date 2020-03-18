@@ -168,7 +168,7 @@ def nuevo(estado,estadosNuevos):
     return 1
 
 #Funcion para convertir de NFA a DFA
-def NFAtoDFA(inicialNFA,finalNFA,alfabeto):
+def NFAaDFA(inicialNFA,finalNFA,alfabeto):
 
     dfa = {}
     DFA = []
@@ -210,7 +210,7 @@ def NFAtoDFA(inicialNFA,finalNFA,alfabeto):
 def evaluarEntrada(cadena, ODFA):
     dfa = ODFA["dfa"]
     ini = 0
-    valid = False
+    valido = False
 
     for caracter in cadena:
 
@@ -230,9 +230,9 @@ def evaluarEntrada(cadena, ODFA):
                 
     for final in ODFA["estadosFinales"]:
         if ini == ODFA["estados"].index(final):
-            valid = True
+            valido = True
     
-    return valid
+    return valido
 
 
 #OUTPUT A USUARIO Y LLAMADAS A FUNCIONES
@@ -241,7 +241,7 @@ print("***************EXPRESIONES REGULARES A AUTOMATAS*****************")
 expresionRegular = input("Ingresa la expresión regular para la creacion de automatas:\n")
 NFA(expresionRegular, False, 1)
 
-dfa = NFAtoDFA(0, estadoFinal, alfabeto)
+dfa = NFAaDFA(0, estadoFinal, alfabeto)
 
 # Grafico
 g = nx.DiGraph()
